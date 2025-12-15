@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { useParams } from "next/navigation"
 
 type AlcoholType = "sake" | "wine"
 
@@ -89,6 +90,8 @@ const questionFlows: Record<AlcoholType, Question[]> = {
 }
 
 export default function QuestionsPage() {
+  const { shopId } = useParams<{ shopId: string }>()
+
   const router = useRouter()
   const [alcoholType, setAlcoholType] = useState<AlcoholType | null>(null)
   const [step, setStep] = useState(0)
@@ -119,8 +122,11 @@ export default function QuestionsPage() {
 
     const isLast = step >= currentQuestions.length - 1
     if (isLast) {
-      console.log("回答結果:", { alcoholType, answers: nextAnswers })
-      router.push(`/shop/done`)
+      const params = new URLSearchParams()
+      params.set("type", alcoholType)
+      params.set("answers", encodeURIComponent(JSON.stringify(nextAnswers)))
+
+      router.push(`/shop/${shopId}/recommendations?${params.toString()}`)
     } else {
       setStep((s) => s + 1)
     }
