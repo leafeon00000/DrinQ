@@ -1,4 +1,3 @@
-// file: src/app/(admin)/admin/page.tsx
 "use client"
 
 import { useState, useTransition, type ChangeEvent, type FormEvent } from "react"
@@ -19,20 +18,20 @@ type BeverageCategory = "sake" | "wine" | "shochu" | "other"
 
 type SakeFlavorProfile = {
   floral: number // 華やか
-  rich: number   // 芳醇
-  heavy: number  // 重厚
-  calm: number   // 穏やか
-  dry: number    // ドライ
-  light: number  // 軽快
+  rich: number // 芳醇
+  heavy: number // 重厚
+  calm: number // 穏やか
+  dry: number // ドライ
+  light: number // 軽快
 }
 
 export type WineFlavorProfile = {
-  body: number        // 軽やか ←→ 重厚
-  sweetness: number   // 甘口 ←→ 辛口
-  acidity: number     // 酸味
-  tannin: number      // 渋み
-  aroma: number       // 香りの強さ
-  fruit: number       // 果実味
+  body: number // 軽やか ←→ 重厚
+  sweetness: number // 甘口 ←→ 辛口
+  acidity: number // 酸味
+  tannin: number // 渋み
+  aroma: number // 香りの強さ
+  fruit: number // 果実味
 }
 
 type BeverageForm = {
@@ -93,8 +92,7 @@ export default function AdminPage() {
   }
 
   const handleSakeFlavorChange =
-    (field: keyof SakeFlavorProfile) =>
-    (e: ChangeEvent<HTMLInputElement>) => {
+    (field: keyof SakeFlavorProfile) => (e: ChangeEvent<HTMLInputElement>) => {
       const value = Number(e.target.value)
       setForm((prev) => ({
         ...prev,
@@ -106,8 +104,7 @@ export default function AdminPage() {
     }
 
   const handleWineFlavorChange =
-    (field: keyof WineFlavorProfile) =>
-    (e: ChangeEvent<HTMLInputElement>) => {
+    (field: keyof WineFlavorProfile) => (e: ChangeEvent<HTMLInputElement>) => {
       const value = Number(e.target.value)
       setForm((prev) => ({
         ...prev,
@@ -138,8 +135,8 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-50 flex items-center justify-center px-4">
-      <Card className="w-full max-w-2xl bg-zinc-900 border-zinc-800 shadow-xl">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4 text-zinc-50">
+      <Card className="w-full max-w-2xl border-zinc-800 bg-zinc-900 shadow-xl">
         <CardHeader>
           <CardTitle className="text-2xl">ドリンク登録</CardTitle>
           <CardDescription className="text-zinc-400">
@@ -216,9 +213,7 @@ export default function AdminPage() {
                       value={form.sakeFlavor.floral}
                       onChange={handleSakeFlavorChange("floral")}
                     />
-                    <p className="text-xs text-zinc-400">
-                      現在: {form.sakeFlavor.floral}
-                    </p>
+                    <p className="text-xs text-zinc-400">現在: {form.sakeFlavor.floral}</p>
                   </div>
 
                   <div className="space-y-2">
@@ -231,9 +226,7 @@ export default function AdminPage() {
                       value={form.sakeFlavor.rich}
                       onChange={handleSakeFlavorChange("rich")}
                     />
-                    <p className="text-xs text-zinc-400">
-                      現在: {form.sakeFlavor.rich}
-                    </p>
+                    <p className="text-xs text-zinc-400">現在: {form.sakeFlavor.rich}</p>
                   </div>
 
                   <div className="space-y-2">
@@ -246,9 +239,7 @@ export default function AdminPage() {
                       value={form.sakeFlavor.heavy}
                       onChange={handleSakeFlavorChange("heavy")}
                     />
-                    <p className="text-xs text-zinc-400">
-                      現在: {form.sakeFlavor.heavy}
-                    </p>
+                    <p className="text-xs text-zinc-400">現在: {form.sakeFlavor.heavy}</p>
                   </div>
 
                   <div className="space-y-2">
@@ -261,9 +252,7 @@ export default function AdminPage() {
                       value={form.sakeFlavor.calm}
                       onChange={handleSakeFlavorChange("calm")}
                     />
-                    <p className="text-xs text-zinc-400">
-                      現在: {form.sakeFlavor.calm}
-                    </p>
+                    <p className="text-xs text-zinc-400">現在: {form.sakeFlavor.calm}</p>
                   </div>
 
                   <div className="space-y-2">
@@ -276,9 +265,7 @@ export default function AdminPage() {
                       value={form.sakeFlavor.dry}
                       onChange={handleSakeFlavorChange("dry")}
                     />
-                    <p className="text-xs text-zinc-400">
-                      現在: {form.sakeFlavor.dry}
-                    </p>
+                    <p className="text-xs text-zinc-400">現在: {form.sakeFlavor.dry}</p>
                   </div>
 
                   <div className="space-y-2">
@@ -291,9 +278,7 @@ export default function AdminPage() {
                       value={form.sakeFlavor.light}
                       onChange={handleSakeFlavorChange("light")}
                     />
-                    <p className="text-xs text-zinc-400">
-                      現在: {form.sakeFlavor.light}
-                    </p>
+                    <p className="text-xs text-zinc-400">現在: {form.sakeFlavor.light}</p>
                   </div>
                 </div>
               </div>
@@ -315,9 +300,7 @@ export default function AdminPage() {
                       value={form.wineFlavor.body}
                       onChange={handleWineFlavorChange("body")}
                     />
-                    <p className="text-xs text-zinc-400">
-                      現在: {form.wineFlavor.body}
-                    </p>
+                    <p className="text-xs text-zinc-400">現在: {form.wineFlavor.body}</p>
                   </div>
 
                   <div className="space-y-2">
@@ -330,9 +313,7 @@ export default function AdminPage() {
                       value={form.wineFlavor.sweetness}
                       onChange={handleWineFlavorChange("sweetness")}
                     />
-                    <p className="text-xs text-zinc-400">
-                      現在: {form.wineFlavor.sweetness}
-                    </p>
+                    <p className="text-xs text-zinc-400">現在: {form.wineFlavor.sweetness}</p>
                   </div>
 
                   <div className="space-y-2">
@@ -345,9 +326,7 @@ export default function AdminPage() {
                       value={form.wineFlavor.acidity}
                       onChange={handleWineFlavorChange("acidity")}
                     />
-                    <p className="text-xs text-zinc-400">
-                      現在: {form.wineFlavor.acidity}
-                    </p>
+                    <p className="text-xs text-zinc-400">現在: {form.wineFlavor.acidity}</p>
                   </div>
 
                   <div className="space-y-2">
@@ -360,9 +339,7 @@ export default function AdminPage() {
                       value={form.wineFlavor.tannin}
                       onChange={handleWineFlavorChange("tannin")}
                     />
-                    <p className="text-xs text-zinc-400">
-                      現在: {form.wineFlavor.tannin}
-                    </p>
+                    <p className="text-xs text-zinc-400">現在: {form.wineFlavor.tannin}</p>
                   </div>
 
                   <div className="space-y-2">
@@ -375,9 +352,7 @@ export default function AdminPage() {
                       value={form.wineFlavor.aroma}
                       onChange={handleWineFlavorChange("aroma")}
                     />
-                    <p className="text-xs text-zinc-400">
-                      現在: {form.wineFlavor.aroma}
-                    </p>
+                    <p className="text-xs text-zinc-400">現在: {form.wineFlavor.aroma}</p>
                   </div>
 
                   <div className="space-y-2">
@@ -390,9 +365,7 @@ export default function AdminPage() {
                       value={form.wineFlavor.fruit}
                       onChange={handleWineFlavorChange("fruit")}
                     />
-                    <p className="text-xs text-zinc-400">
-                      現在: {form.wineFlavor.fruit}
-                    </p>
+                    <p className="text-xs text-zinc-400">現在: {form.wineFlavor.fruit}</p>
                   </div>
                 </div>
               </div>
@@ -420,12 +393,8 @@ export default function AdminPage() {
               />
             </div>
 
-            <div className="flex items-center justify-between pt-2 gap-4">
-              {message && (
-                <p className="text-sm text-zinc-300">
-                  {message}
-                </p>
-              )}
+            <div className="flex items-center justify-between gap-4 pt-2">
+              {message && <p className="text-sm text-zinc-300">{message}</p>}
               <Button type="submit" disabled={isPending} className="ml-auto">
                 {isPending ? "登録中..." : "登録する"}
               </Button>

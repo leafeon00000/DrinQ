@@ -1,4 +1,3 @@
-// file: src/app/shop/[shopId]/recommendations/page.tsx
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
