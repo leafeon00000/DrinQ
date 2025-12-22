@@ -1,0 +1,21 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "17199958b393f07981d8f9ce96ec2d6942ae3fa7682d599099f1bfe6ccff335c": {
+      "displayName": "drinq-stg-web Template",
+      "source": {
+        "path": "drinq-stg-web.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "212477431247-ap-northeast-1-8ed63514": {
+          "bucketName": "cdk-hnb659fds-assets-212477431247-ap-northeast-1",
+          "objectKey": "17199958b393f07981d8f9ce96ec2d6942ae3fa7682d599099f1bfe6ccff335c.json",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::212477431247:role/cdk-hnb659fds-file-publishing-role-212477431247-ap-northeast-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
