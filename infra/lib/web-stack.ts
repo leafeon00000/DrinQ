@@ -33,27 +33,6 @@ export class WebStack extends cdk.Stack {
         { name: "STAGE", value: props.stage },
         { name: "DDB_TABLE_NAME", value: props.table.tableName },
       ],
-      // monorepoなので web 配下をビルド
-      buildSpec: `
-version: 1
-applications:
-  - appRoot: web
-    frontend:
-      phases:
-        preBuild:
-          commands:
-            - npm ci
-        build:
-          commands:
-            - npm run build
-      artifacts:
-        baseDirectory: .next
-        files:
-          - '**/*'
-      cache:
-        paths:
-          - node_modules/**/*
-`,
     })
 
     new amplify.CfnBranch(this, "Branch", {
