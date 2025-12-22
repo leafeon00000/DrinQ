@@ -3,6 +3,8 @@ import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import type { ReactNode } from "react"
 
+export const dynamic = "force-dynamic"
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
