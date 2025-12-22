@@ -1,19 +1,18 @@
 import type { Metadata } from "next"
-import { Inter, JetBrains_Mono } from "next/font/google"
+import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import type { ReactNode } from "react"
 
-export const dynamic = "force-dynamic"
-
-const inter = Inter({
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  variable: "--font-sans",
 })
 
-const mono = JetBrains_Mono({
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  variable: "--font-mono",
 })
+
 export const metadata: Metadata = {
   title: "DrinQ",
   description: "あなたの好みに合う一杯を。",
@@ -22,7 +21,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja" className="dark">
-      <body className={`${inter.variable} ${mono.variable}`}>{children}</body>
+      <body className="bg-zinc-950 antialiased">{children}</body>
     </html>
   )
 }
