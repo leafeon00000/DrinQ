@@ -1,69 +1,70 @@
 import * as cdk from "aws-cdk-lib"
 import { Construct } from "constructs"
-import * as amplify from "aws-cdk-lib/aws-amplify"
-import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager"
-import * as dynamodb from "aws-cdk-lib/aws-dynamodb"
+import * as s3 from "aws-cdk-lib/aws-s3"
+import * as cloudfront from "aws-cdk-lib/aws-cloudfront"
+import * as origins from "aws-cdk-lib/aws-cloudfront-origins"
+import * as s3deploy from "aws-cdk-lib/aws-s3-deployment"
+import * as iam from "aws-cdk-lib/aws-iam"
 
-type Props = cdk.StackProps & {
-  stage: string
-  table: dynamodb.ITable
+export interface WebStackProps extends cdk.StackProps {
+  stage: "stg" | "prod"
 }
 
 export class WebStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props: Props) {
+  constructor(scope: Construct, id: string, props: WebStackProps) {
     super(scope, id, props)
 
-    const githubTokenSecret = secretsmanager.Secret.fromSecretNameV2(
-      this,
-      "GitHubToken",
-      "drinq/github_token"
+    const { stage } = props
+
+    const siteBucket = new s3.Bucket(this, "SiteBucket", {
+      bucketName: `${cdk.Stack.of(this).account}-drinq-web-${stage}-${cdk.Stack.of(this).region}`,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      removalPolicy: stage === "prod" ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: stage === "prod" ? false : true,
+    })
+
+    new cloudfront.S3OriginAccessControl(this, "OAC", {
+      originAccessControlName: `drinq-web-oac-${stage}`,
+    })
+
+    // Distribution は普通に作る（Origin は S3Origin でOK）
+    const distribution = new cloudfront.Distribution(this, "Distribution", {
+      defaultRootObject: "index.html",
+      defaultBehavior: {
+        origin: new origins.S3Origin(siteBucket),
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+      },
+      errorResponses: [
+        { httpStatus: 403, responseHttpStatus: 200, responsePagePath: "/index.html" },
+        { httpStatus: 404, responseHttpStatus: 200, responsePagePath: "/index.html" },
+      ],
+    })
+
+    siteBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        actions: ["s3:GetObject"],
+        resources: [siteBucket.arnForObjects("*")],
+        principals: [new iam.ServicePrincipal("cloudfront.amazonaws.com")],
+        conditions: {
+          StringEquals: {
+            "AWS:SourceArn": `arn:aws:cloudfront::${cdk.Stack.of(this).account}:distribution/${distribution.distributionId}`,
+          },
+        },
+      })
     )
 
-    const githubToken = githubTokenSecret.secretValueFromJson(
-      "drinq/github-token"
-    ).toString()
-
-    // Amplify App (Next.js SSR)
-    const app = new amplify.CfnApp(this, "AmplifyApp", {
-      name: `drinq-${props.stage}-web`,
-      repository: "https://github.com/leafeon00000/DrinQ",
-      accessToken: githubToken,
-      platform: "WEB_COMPUTE", // SSR対応
-      environmentVariables: [
-        { name: "STAGE", value: props.stage },
-        { name: "DDB_TABLE_NAME", value: props.table.tableName },
-      ],
-      // monorepoなので web 配下をビルド
-      buildSpec: `
-version: 1
-applications:
-  - appRoot: web
-    frontend:
-      phases:
-        preBuild:
-          commands:
-            - npm ci
-        build:
-          commands:
-            - npm run build
-      artifacts:
-        baseDirectory: .amplify-hosting
-        files:
-          - '**/*'
-      cache:
-        paths:
-          - node_modules/**/*
-`,
+    // ビルド成果物をS3にアップロード（web/out を前提）
+    new s3deploy.BucketDeployment(this, "DeployWeb", {
+      sources: [s3deploy.Source.asset("../web/out")],
+      destinationBucket: siteBucket,
+      distribution,
+      distributionPaths: ["/*"],
     })
 
-    new amplify.CfnBranch(this, "Branch", {
-      appId: app.attrAppId,
-      branchName: props.stage, // stg / prod みたいにできる
-      enableAutoBuild: true,
-    })
-
-    new cdk.CfnOutput(this, "AmplifyDefaultDomain", {
-      value: app.attrDefaultDomain,
+    new cdk.CfnOutput(this, "CloudFrontUrl", {
+      value: `https://${distribution.domainName}`,
     })
   }
 }

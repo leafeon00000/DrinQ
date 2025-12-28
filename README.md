@@ -6,6 +6,8 @@ https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/getting-started-install.h
 ## AWS 設定
 AWS configure
 
+# ローカル実行
+npx serve out
 
 ## デプロイ方法
 cd infra
@@ -15,7 +17,7 @@ npm ci
 npm run deploy:stg -- --all
 
 ### STG破壊（全部消える）
-npm run destroy:stg
+npm run destroy:stg -- --all
 
 ### PRODデプロイ
 npm run deploy:prod
