@@ -1,3 +1,4 @@
+// file: infra/lib/core-stack.ts
 import * as cdk from "aws-cdk-lib"
 import { Construct } from "constructs"
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb"
@@ -17,6 +18,14 @@ export class CoreStack extends cdk.Stack {
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       removalPolicy:
         props.stage === "prod" ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+    })
+
+    // グローバル酒マスタの一覧/カテゴリ絞り用
+    this.table.addGlobalSecondaryIndex({
+      indexName: "gsi1",
+      partitionKey: { name: "gsi1pk", type: dynamodb.AttributeType.STRING },
+      sortKey: { name: "gsi1sk", type: dynamodb.AttributeType.STRING },
+      projectionType: dynamodb.ProjectionType.ALL,
     })
   }
 }

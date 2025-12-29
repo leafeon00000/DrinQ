@@ -1,0 +1,6 @@
+// file: services/api/src/db/client.ts
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb"
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb"
+
+export const TABLE_NAME = process.env.TABLE_NAME!
+export const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}))
