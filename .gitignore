@@ -1,5 +1,5 @@
 # Dependencies
-/node_modules
+**/node_modules
 
 # Build output
 /.next
@@ -36,4 +36,10 @@ Thumbs.db
 # Misc
 .next.cache
 
-.env*
+# CDK
+infra/cdk.out/**
+**/cdk.out/**
+
+# Env
+.env
+.env.*

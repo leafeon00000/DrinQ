@@ -7,10 +7,10 @@ export default function HomePage() {
       <p className="text-zinc-400">あなたの好みに合う一杯を。</p>
 
       <div className="flex gap-4">
-        <Link href="/admin" className="underline">
+        <Link href="/admin" prefetch={false} className="underline">
           酒屋向け管理画面
         </Link>
-        <Link href="/shop/demo/questions" className="underline">
+        <Link href="/shop/demo/questions/" prefetch={false} className="underline">
           おすすめ診断を試す
         </Link>
       </div>
